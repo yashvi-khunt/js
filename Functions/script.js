@@ -141,17 +141,17 @@ const book = lufthansa.book;
 
 //book(23, 'sarah williams')
 
-book.call(eurowings, 23, "Sarah Williams");
-console.log(lufthansa);
-console.log(eurowings);
+// book.call(eurowings, 23, "Sarah Williams");
+// console.log(lufthansa);
+// console.log(eurowings);
 
-//apply  >> array
-const flightData = [586, "George"];
-book.apply(eurowings, flightData);
-console.log(eurowings.bookings);
+// //apply  >> array
+// const flightData = [586, "George"];
+// book.apply(eurowings, flightData);
+// console.log(eurowings.bookings);
 
-book.call(lufthansa, ...flightData);
-console.log(lufthansa.bookings);
+// book.call(lufthansa, ...flightData);
+// console.log(lufthansa.bookings);
 
 /* >> Bind << */
 const bookEW = book.bind(eurowings, null, "Seven");
