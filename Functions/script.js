@@ -112,7 +112,7 @@ greetDup("Hiee")("Martha");
 greet("hello")("Adam");
 */
 
-/* >> CAll and Apply << */
+/* >> CAll and Apply << 
 
 //call  >> multiple values
 const lufthansa = {
@@ -121,10 +121,11 @@ const lufthansa = {
   bookings: [],
 
   book(flightNum, name) {
-    console.log(
-      `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
-    );
-    this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
+    console.log("flightNUm: ", flightNum, "name: ", name);
+    // console.log(
+    //   `${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`
+    // );
+    // this.bookings.push({ flight: `${this.iataCode}${flightNum}`, name });
   },
 };
 
@@ -134,8 +135,8 @@ const eurowings = {
   bookings: [],
 };
 
-lufthansa.book(234, "Jonas");
-lufthansa.book(458, "Martha");
+// lufthansa.book(234, "Jonas");
+// lufthansa.book(458, "Martha");
 
 const book = lufthansa.book;
 
@@ -154,6 +155,121 @@ const book = lufthansa.book;
 // console.log(lufthansa.bookings);
 
 /* >> Bind << */
-const bookEW = book.bind(eurowings, null, "Seven");
-bookEW(34);
-console.log(eurowings.bookings);
+
+// const bookEW = book.bind(eurowings, (null, "seven"));
+// bookEW(23);
+// console.log(bookEW);
+
+// const bookEW23 = book.bind(eurowings, 23);
+// bookEW23("Martha");
+
+// const neArr = [23, null];
+// const bookarr = book.bind(eurowings, neArr);
+// bookarr("sarah");
+
+//event listeners
+// lufthansa.planes = 300;
+// lufthansa.buyPlane = function () {
+//   console.log(this);
+//   this.planes++;
+//   console.log(this.planes);
+// };
+
+// //document.querySelector(".buy").addEventListener("click", lufthansa.buyPlane); //return NaN because this points to button
+
+// document
+//   .querySelector(".buy")
+//   .addEventListener("click", lufthansa.buyPlane.bind(lufthansa));
+
+/*
+//bind method
+const addTax = (rate, value) => value + value * rate;
+const addVAT = addTax.bind(null, 0.23);
+console.log(addVAT(100));
+
+//returning function
+const addTax = function (rate) {
+  return function (value) {
+    return value + value * rate;
+  };
+};
+
+const addVAT = addTax(0.23);
+console.log(addVAT(100));
+*/
+
+/* >> IIFE - immediately invoked function expression << 
+(function () {
+  console.log("Never invoked again");
+})();
+
+(() => console.log("Mee too"))();
+*/
+
+/* CLOSUERS 
+
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(passengerCount);
+  };
+};
+
+const booker = secureBooking();
+
+booker();
+booker();
+booker();
+
+
+
+let f;
+const g = function () {
+  //object
+  const jonas = {
+    name: "jonas",
+    new() {
+      console.log("Objext > method");
+    },
+  };
+
+  //method
+  const newMethod = function () {
+    console.log("methods");
+  };
+
+  const a = 10;
+  f = function () {
+    // newMethod();
+    // console.log(jonas.name);
+    // jonas.new();
+    console.log(a);
+  };
+};
+
+const h = function () {
+  const b = 12;
+  f = function () {
+    console.log(b);
+  };
+};
+g();
+h(); //re-assingning
+f();
+
+
+const boardPassengers = function (n, wait) {
+  const perGroup = n / 3;
+
+  //callback function
+  setTimeout(function () {
+    console.log(`we are now boarding all ${n} passengers`);
+    console.log(`there are 3 groups, each with ${perGroup} passengers`);
+  }, wait * 1000);
+  console.log(`will start boarding in ${wait} seconds`);
+};
+const perGroup = 198;
+boardPassengers(180, 3);
+*/
