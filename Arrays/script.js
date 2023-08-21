@@ -61,13 +61,20 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
-/*// DOM Manuplation
+// DOM Manuplation
 //create fn - displaymovements - dyanamic entry of all transactions
-*/
-const displaymovements = function (movements) {
+
+const displaymovements = function (movements, sort = false) {
   // console.log(movements);
+
+  //----- SORTING -----
+  const sortedMovements = sort
+    ? movements.slice().sort((a, b) => a - b)
+    : movements;
+  // console.log(sortedMovements);
+
   containerMovements.innerHTML = "";
-  movements.forEach(function (mov, i) {
+  sortedMovements.forEach(function (mov, i) {
     // console.log(mov);
     const type = mov >= 0 ? "deposit" : "withdrawal";
     const html = `
@@ -142,6 +149,8 @@ const calcSummary = function (acc) {
   labelSumInterest.textContent = `${interest}₹`;
 };
 // calcSummary(account1.movements);
+
+//  ----- update ui function -----
 let currentUser;
 const updatedUI = function (acc) {
   //display movements
@@ -179,6 +188,14 @@ btnLogin.addEventListener("click", function (e) {
   }
 });
 
+// ----- Sort method -----
+let sorted = true; //state variable
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+  displaymovements(currentUser.movements, sorted);
+  sorted = !sorted;
+});
+
 // ----- Transfer Money Process -----
 
 btnTransfer.addEventListener("click", function (e) {
@@ -212,6 +229,29 @@ btnTransfer.addEventListener("click", function (e) {
     //show updated ui
     updatedUI(currentUser);
   }
+});
+
+// ----- Request Loan -----
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  //get loan amount
+  const loanAmount = Number(inputLoanAmount.value);
+
+  //grant loan if any deposit > 0.1*loan amount
+  if (currentUser.movements.some((mov) => mov > loanAmount * 0.1)) {
+    //add loan for amount
+    currentUser.movements.push(loanAmount);
+  } else {
+    alert("Not enough credit.");
+  }
+
+  //clear input fields
+  inputLoanAmount.value = "";
+  inputLoanAmount.blur();
+
+  //update ui fields;
+  updatedUI(currentUser);
 });
 
 // ----- Close Account -----
@@ -356,3 +396,78 @@ console.log(account);
 */
 
 //Find Index - returns first index of the element
+
+/*
+//SOME METHOD
+console.log(account1.movements.some((mov) => mov === 1300));
+const dep = account1.movements.some((mov) => mov > 0);
+console.log(dep);
+*/
+
+/*
+//EVERY METHOD
+ console.log(account1.movements.every((mov) => mov > 0));
+ console.log(account4.movements.every((mov) => mov > 0));
+*/
+
+/*
+//FLAT METHOD
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+console.log(arr.flat());
+
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+console.log(arrDeep.flat());
+console.log(arrDeep.flat(1));
+console.log(arrDeep.flat(2));
+
+const overallBalance = accounts
+  .map((acc) => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overallBalance);
+*/
+
+/*
+//FLAT MAP METHOD - only 1 level deep
+const overallBalance = accounts
+  .flatMap((acc) => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overallBalance);
+*/
+
+/*
+//SORTING ARRAYS
+
+//strings
+const owners = ["jonas", "zack", "adam", "martha"];
+console.log(`[${owners}] - [${owners.sort()}] - [${owners}]`);
+//numbers
+console.log(account1.movements.sort() + " is not a correct order for numbers");
+
+//return -1 : A,B(keep order)
+//return 1 : B,A(switch order)
+console.log(
+  account1.movements.sort((a, b) => {
+    if (a > b) return -1;
+    if (a < b) return 1;
+  })
+);
+
+//descending order
+console.log(account1.movements.sort((a, b) => a - b));
+//ascending order
+console.log(account1.movements.sort((a, b) => b - a));
+*/
+
+/* Dynamically creating and filling array 
+
+const arr = new Array(7);
+console.log(arr); //result : [empty × 5]
+
+console.log(arr.fill(1, 3, 5)); // [0, 3, 3, 3, 3]
+console.log(arr.fill(0)); // [0, 0, 0, 0, 0, 0, 0]
+console.log(arr.fill(23, 2, 6)); // [0, 0, 23, 23, 23, 23, 0]
+
+console.log(Array.from({ length: 7 }, () => 1)); //[1, 1, 1, 1, 1, 1, 1]
+console.log(Array.from({ length: 7 }, (_, i) => i + 1)); //[1, 2, 3, 4, 5, 6, 7]
+*/
